@@ -61,10 +61,16 @@ func main() {
 	states = append(states, State{ID: "4", Name: "escalation"})
 
 	router := mux.NewRouter()
+	//Routes for states
 	router.HandleFunc("/state", GetStatesEndpoint).Methods("GET")
 	router.HandleFunc("/state/{id}", GetStateEndpoint).Methods("GET")
 	router.HandleFunc("/state/{id}", CreateStateEndpoint).Methods("POST")
 	router.HandleFunc("/state/{id}", DeleteStateEndpoint).Methods("DELETE")
+	//Routes for state transitions
+	router.HandleFunc("/state/{sid}/transition", GetStateTransitionsEndpoint).Methods("GET")
+	router.HandleFunc("/state/{sid}/transition/{tid}", GetStateTransitionEndpoint).Methods("GET")
+	router.HandleFunc("/state/{sid}/transition/{tid}", CreateStateTransitionEndpoint).Methods("POST")
+	router.HandleFunc("/state/{sid}/transition/{tid}", DeleteStateTransitionEndpoint).Methods("DELETE")
 
 	log.Fatal(http.ListenAndServe(":12345", router))
 
