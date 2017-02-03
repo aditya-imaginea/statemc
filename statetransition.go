@@ -7,14 +7,6 @@ import (
 	"github.com/gorilla/mux"
 )
 
-type StateTransition struct {
-	ID          string `json:"id,omitempty"`
-	SourceID    string `json:"sourceId,omitempty"`
-	TargetID    string `json:"targetId,omitempty"`
-	Description string `json:"description,omitempty"`
-	Owner       string `json:"owner,omitempty"`
-}
-
 var stateTransitions []StateTransition
 
 // written with perspective of single transition between states

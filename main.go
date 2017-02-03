@@ -8,12 +8,6 @@ import (
 	"github.com/gorilla/mux"
 )
 
-type State struct {
-	ID          string `json:"id,omitempty"`
-	Name        string `json:"name,omitempty"`
-	Description string `json:"description,omitempty"`
-}
-
 var states []State
 
 func GetStateEndpoint(w http.ResponseWriter, req *http.Request) {
@@ -36,8 +30,6 @@ func CreateStateEndpoint(w http.ResponseWriter, req *http.Request) {
 	var state State
 	_ = json.NewDecoder(req.Body).Decode(&state)
 	state.ID = params["id"]
-	//	state.Name = params["name"]
-	//	state.Description = params["description"]
 
 	states = append(states, state)
 	json.NewEncoder(w).Encode(states)
@@ -71,7 +63,16 @@ func main() {
 	router.HandleFunc("/state/{sid}/transition/{tid}", GetStateTransitionEndpoint).Methods("GET")
 	router.HandleFunc("/state/{sid}/transition/{tid}", CreateStateTransitionEndpoint).Methods("POST")
 	router.HandleFunc("/state/{sid}/transition/{tid}", DeleteStateTransitionEndpoint).Methods("DELETE")
-
+	// Routes for creating statemachine
+	//	router.HandleFunc("/statemc", GetStatesMcEndpoint).Methods("GET")
+	//router.HandleFunc("/statemc/{smid}", GetStateMcEndpoint).Methods("GET")
+	//router.HandleFunc("/statemc/{smid}/states", AppendStatesEndpoint).Methods("POST")
+	//router.HandleFunc("/statemc/{smid}/states", GetStatesInSmEndpoint).Methods("GET")
+	//router.HandleFunc("/statemc/{smid}/owner", GetStateMcOwner).Methods("GET")
+	//router.HandleFunc("/statemc/owner", GetAllStateMcOwners).Methods("GET")
+	router.HandleFunc("/statemc/{oid}", CreateStateMachineEndpoint).Methods("POST")
+	//router.HandleFunc("/statemc/{smid}/transitions", AppendTransitionsEndpoint).Methods("POST")
+	//router.HandleFunc("/statemc/{smid}/transitions", GetTransitionsinSmEndpoint).Methods("GET")
 	log.Fatal(http.ListenAndServe(":12345", router))
 
 }
